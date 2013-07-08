@@ -1,4 +1,4 @@
-colorpicker
+Color Picker
 ===========
 
-ColorPicker
+Color Picker
