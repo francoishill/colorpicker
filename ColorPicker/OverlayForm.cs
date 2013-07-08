@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace ColorPicker
 {
 	public partial class OverlayForm : Form
 	{
@@ -30,13 +30,42 @@ namespace WindowsFormsApplication1
 		private void OverlayForm_Load(object sender, EventArgs e)
 		{
 			this.WindowState = FormWindowState.Maximized;
-			Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+
+			var screenToCopy = Screen.PrimaryScreen;
+			Bitmap bitmap = new Bitmap(screenToCopy.Bounds.Width, screenToCopy.Bounds.Height);
 			Graphics graphics = Graphics.FromImage(bitmap as Image);
 			graphics.CopyFromScreen(0, 0, 0, 0, bitmap.Size);
+			DrawOnscreenBar(screenToCopy.Bounds, graphics);
+
 			pictureBox1.Image = bitmap;
 			pictureBox1.Refresh();
 
 			originalImage = new Bitmap(pictureBox1.Image);
+		}
+
+		private void DrawOnscreenBar(Rectangle workBounds, Graphics graphics)
+		{
+			Pen boundRectColor = Pens.Green;
+			graphics.DrawRectangle(boundRectColor, workBounds.Left, workBounds.Top, workBounds.Width, workBounds.Height);
+			graphics.DrawRectangle(boundRectColor, workBounds.Left + 1, workBounds.Top + 1, workBounds.Width - 2, workBounds.Height - 2);
+			graphics.DrawRectangle(boundRectColor, workBounds.Left + 2, workBounds.Top + 2, workBounds.Width - 4, workBounds.Height - 4);
+
+			var barHeight = 25;
+			var barWidth = 600;
+			graphics.FillRectangle(
+				new SolidBrush(boundRectColor.Color),
+				workBounds.Left + workBounds.Width / 2 - barWidth / 2,
+				workBounds.Bottom - barHeight,
+				barWidth,
+				barHeight);
+
+			var helpText = "Right click to close overlay, hold left-click and drag to choose zoom rectangle. Maximum rectangle side length = " + cMaxRectSideLength;
+			var helptextFont = (Font)this.Font.Clone();
+			var stringSize = graphics.MeasureString(helpText, helptextFont);
+			var stringLocation = new PointF(
+				workBounds.Left + workBounds.Width / 2 - stringSize.Width / 2,
+				workBounds.Bottom - barHeight / 2 - stringSize.Height / 2);
+			graphics.DrawString(helpText, helptextFont, Brushes.White, stringLocation);
 		}
 
 		private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
@@ -166,7 +195,7 @@ namespace WindowsFormsApplication1
 					{
 						var point = lastEncircledPoint_ActualScale.Value;
 						var color = (pictureBox1.Image as Bitmap).GetPixel(point.X, point.Y);
-						
+
 						new ClickedColorCopy(color).ShowDialog();
 					}
 				}

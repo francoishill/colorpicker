@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace ColorPicker
 {
 	partial class OverlayForm
 	{
@@ -54,6 +54,7 @@
 			this.DoubleBuffered = true;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "OverlayForm";
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "OverlayForm";
 			this.Load += new System.EventHandler(this.OverlayForm_Load);

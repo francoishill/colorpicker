@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace ColorPicker
 {
 	static class Program
 	{
+		private static NotifyIcon icon;
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -19,16 +22,29 @@ namespace WindowsFormsApplication1
 			Application.SetCompatibleTextRenderingDefault(false);
 			//Application.Run(new Form1());
 			icon = new NotifyIcon();
-			icon.Icon = new Icon(@"C:\Francois\Dev\VSprojects\CloudNote\CloudNote\app.ico");
+			icon.Icon = new Icon(
+				Assembly.GetEntryAssembly().GetManifestResourceStream("ColorPicker.app.ico"));
 			icon.Visible = true;
-			icon.Click += delegate
+			icon.ContextMenu = GetNotifyiconContextmenu();
+			icon.MouseClick += (sn, ev) =>
 			{
-				new OverlayForm().ShowDialog();
+				if (ev.Button == MouseButtons.Left)
+					new OverlayForm().ShowDialog();
 			};
 
 			while (icon.Visible)
 				Application.DoEvents();
 		}
-		static NotifyIcon icon;
+
+		private static ContextMenu GetNotifyiconContextmenu()
+		{
+			var menu = new ContextMenu();
+			menu.MenuItems.Add(new MenuItem("E&xit", delegate
+			{
+				icon.Visible = false;
+				Environment.Exit(0);
+			}));
+			return menu;
+		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace ColorPicker
 {
 	partial class ClickedColorCopy
 	{
