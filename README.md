@@ -3,6 +3,8 @@ Color Picker
 
 Ever got frustrated with wanting to know what color something is but have to do it the long way - take screenshot, paste into Paint, use Color picker?
 
+Clients send you a PSD or JPEG with their design but finding all the colors takes too long?
+
 Well this just takes out all these excessive steps and let you easily find the color you're looking for.
 * Run the application - it adds a new Icon in your tray
 * Left click on the icon to bring up the overlay
