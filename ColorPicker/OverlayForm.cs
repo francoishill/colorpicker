@@ -196,7 +196,9 @@ namespace ColorPicker
 						var point = lastEncircledPoint_ActualScale.Value;
 						var color = (pictureBox1.Image as Bitmap).GetPixel(point.X, point.Y);
 
+						this.TopMost = false;
 						new ClickedColorCopy(color).ShowDialog();
+						this.TopMost = true;
 					}
 				}
 				else
